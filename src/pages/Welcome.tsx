@@ -55,9 +55,9 @@ export default function Welcome() {
     return (
         <div className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]">
             <div
-                className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] bg-green-700/30 rounded-full blur-[120px] pointer-events-none -z-10"/>
+                className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] bg-green-700/30 rounded-full blur-[120px] pointer-events-none -z-1"/>
             <div
-                className="absolute top-[50%] left-[-10%] w-[200px] h-[200px] bg-purple-600/30 rounded-full blur-[100px] pointer-events-none -z-10"/>
+                className="absolute top-[50%] left-[-10%] w-[200px] h-[200px] bg-purple-600/30 rounded-full blur-[100px] pointer-events-none -z-1"/>
 
             <header className="mt-5 mb-4 relative z-20">
                 <div className="flex items-start justify-between mb-3">
