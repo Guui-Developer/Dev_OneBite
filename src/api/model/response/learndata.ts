@@ -25,6 +25,7 @@ export interface CodeTipData extends BaseLearningData {
     type: 'code_tip';
     code: string;
     description: string;
+    language: string;
 }
 
 /** 2. 버그 챌린지 (bug_challenge) */

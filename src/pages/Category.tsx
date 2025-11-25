@@ -5,6 +5,8 @@ import { categoryStore } from '@/store/categoryStore.ts';
 import { Icon } from '@/components/icons/Icon';
 import { CategoriesApi } from '@/api';
 import type { CategoryGroup } from '@/api/model/response/category';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import BackgroundGradient from '@/components/BackgroundGradient';
 
 interface CategoryPageProps {}
 
@@ -46,18 +48,12 @@ export default function Category({}: CategoryPageProps) {
   };
 
   if (localLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A0A0A]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00D9FF]"></div>
-        <p className="mt-4 text-[#B0B0B0]">카테고리 로딩 중...</p>
-      </div>
-    );
+    return <LoadingSpinner message="카테고리 로딩 중..." />;
   }
 
   return (
     <div className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]">
-      <div className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] bg-green-700/30 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[50%] left-[-10%] w-[200px] h-[200px] bg-purple-600/30 rounded-full blur-[100px] pointer-events-none -z-10" />
+      <BackgroundGradient variant="green-purple" />
 
       <header className="mt-5 mb-4 relative z-20">
         <div className="flex items-start justify-between mb-3">
