@@ -10,7 +10,7 @@ export interface CategoriesData {
 }
 
 export interface CategoryGroup {
-    group: string
+    groupLabel: string
     groupKey: string
     icon: string
     categories: Category[]

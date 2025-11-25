@@ -28,7 +28,7 @@ export default function Learn({}: LearnProps) {
       navigate('/category');
       return;
     }
-    loadContent();
+    loadContent().then(r => r);
   }, [selectedCategories]);
 
   const loadContent = async () => {
@@ -36,14 +36,11 @@ export default function Learn({}: LearnProps) {
       setLoading(true);
       setLocalLoading(true);
       const response = await ContentApi.getContentList({
-        categories: selectedCategories.join(','),
         limit: 20,
         random: true,
       });
 
-      if (response.success) {
-        setContentList(response.data.content);
-      }
+      setContentList(response.content);
     } catch (error) {
       console.error('Failed to load content:', error);
     } finally {
@@ -58,14 +55,11 @@ export default function Learn({}: LearnProps) {
     try {
       setIsLoadingMore(true);
       const response = await ContentApi.getContentList({
-        categories: selectedCategories.join(','),
         limit: 20,
         random: true,
       });
 
-      if (response.success) {
-        setContentList([...contentList, ...response.data.content]);
-      }
+        setContentList([...contentList, ...response.content])
     } catch (error) {
       console.error('Failed to load more content:', error);
     } finally {
@@ -73,7 +67,6 @@ export default function Learn({}: LearnProps) {
     }
   }, [isLoadingMore, selectedCategories, contentList, setContentList]);
 
-  // Intersection Observer for tracking visible content and adding to history
   useEffect(() => {
     if (contentList.length === 0) return;
 

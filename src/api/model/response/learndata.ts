@@ -54,7 +54,7 @@ export interface InterviewData extends BaseLearningData {
     type: 'interview';
     question: string;
     answer: string;
-    tail: string;
+    tail: string[];
 }
 
 

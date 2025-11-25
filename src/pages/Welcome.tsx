@@ -6,23 +6,21 @@ import {categoryStore} from '../store/categoryStore.ts'
 import {CategoriesApi} from '@/api'
 import type {CategoryGroup} from '@/api/model/response/category'
 
-export default function Welcome() {
+export function Welcome() {
     const navigate = useNavigate()
     const {selectedCategories, setSelectedCategories} = categoryStore()
     const [categories, setCategories] = useState<CategoryGroup[]>([])
     const [localLoading, setLocalLoading] = useState(true)
 
     useEffect(() => {
-        loadCategories()
+        loadCategories().then(r => r)
     }, [])
 
     const loadCategories = async () => {
         try {
             setLocalLoading(true)
             const response = await CategoriesApi.getCategories()
-            if (response.success) {
-                setCategories(response.data.groups)
-            }
+            setCategories(response.groups)
         } catch (error) {
             console.error('Failed to load categories:', error)
         } finally {
@@ -55,9 +53,9 @@ export default function Welcome() {
     return (
         <div className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]">
             <div
-                className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] bg-green-700/30 rounded-full blur-[120px] pointer-events-none -z-1"/>
+                className="absolute top-[-10%] right-[-5%] w-[300px] h-[300px] bg-green-700/30 rounded-full blur-[120px] pointer-events-none z-0"/>
             <div
-                className="absolute top-[50%] left-[-10%] w-[200px] h-[200px] bg-purple-600/30 rounded-full blur-[100px] pointer-events-none -z-1"/>
+                className="absolute top-[50%] left-[-10%] w-[200px] h-[200px] bg-purple-600/30 rounded-full blur-[100px] pointer-events-none z-0"/>
 
             <header className="mt-5 mb-4 relative z-20">
                 <div className="flex items-start justify-between mb-3">
@@ -81,7 +79,7 @@ export default function Welcome() {
             하루 5초
             <span className="absolute bottom-1 left-0 w-full h-[6px] bg-[#00D9FF]/20 -z-10 rounded-full"></span>
           </span>{' '}
-                    지식 충전소 ⚡️
+                    개발 충전소 ⚡️
                 </p>
             </header>
 
@@ -89,8 +87,9 @@ export default function Welcome() {
                 {categories.map((group) => (
                     <section key={group.groupKey}>
                         <div className="flex gap-2 items-center mb-3">
-                            <img src={group.icon} className="w-4 h-4 brightness-110 saturate-110" alt={group.group}/>
-                            <h3 className="text-xl font-semibold text-[#E0E0E0]">{group.group}</h3>
+                            <img src={group.icon} className="w-4 h-4 brightness-110 saturate-110"
+                                 alt={group.groupLabel}/>
+                            <h3 className="text-xl font-semibold text-[#E0E0E0]">{group.groupLabel}</h3>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {group.categories.map((category) => (

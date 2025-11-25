@@ -1,0 +1,188 @@
+﻿{
+  "success": true,
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "type": "code_tip",
+        "title": "💡 배열 평탄화",
+        "code": "arr.flat(2)",
+        "description": "중첩 배열을 지정한 깊이만큼 평탄화",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-20T10:00:00Z"
+      },
+      {
+        "id": 2,
+        "type": "code_tip",
+        "title": "💡 객체 병합",
+        "code": "const merged = {...obj1, ...obj2}",
+        "description": "스프레드 문법으로 간단한 객체 병합",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-20T11:00:00Z"
+      },
+      {
+        "id": 3,
+        "type": "code_tip",
+        "title": "💡 Nullish 병합",
+        "code": "const value = input ?? 'default'",
+        "description": "null/undefined만 체크하는 기본값 설정",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-20T12:00:00Z"
+      },
+      {
+        "id": 4,
+        "type": "bug_challenge",
+        "title": "🐛 비동기 루프 버그",
+        "code": "for(let i=0; i<3; i++) {\n  setTimeout(() => console.log(i), 100)\n}",
+        "answer": "let 사용으로 블록 스코프 생성되어 0,1,2 출력됨",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-21T10:00:00Z"
+      },
+      {
+        "id": 5,
+        "type": "bug_challenge",
+        "title": "🐛 useEffect 무한루프",
+        "code": "useEffect(() => {\n  setCount(count + 1)\n}, [count])",
+        "answer": "의존성 배열에 count가 있어 무한 업데이트 발생",
+        "tags": [
+          "React"
+        ],
+        "createdAt": "2024-11-21T11:00:00Z"
+      },
+      {
+        "id": 6,
+        "type": "bug_challenge",
+        "title": "🐛 참조 비교 실수",
+        "code": "const obj1 = {a: 1}\nconst obj2 = {a: 1}\nobj1 === obj2",
+        "answer": "false 반환. 객체는 참조를 비교함",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-21T12:00:00Z"
+      },
+      {
+        "id": 7,
+        "type": "code_review",
+        "title": "👨‍💻 중복 코드 제거",
+        "before": "if(type==='A') doA()\nif(type==='B') doB()\nif(type==='C') doC()",
+        "after": "const actions = {A: doA, B: doB, C: doC}\nactions[type]?.()",
+        "feedback": "객체 매핑으로 확장 가능한 구조",
+        "tags": [
+          "Clean Code"
+        ],
+        "createdAt": "2024-11-22T10:00:00Z"
+      },
+      {
+        "id": 8,
+        "type": "code_review",
+        "title": "👨‍💻 Early Return 패턴",
+        "before": "if(valid) {\n  // 긴 로직\n} else {\n  return error\n}",
+        "after": "if(!valid) return error\n// 긴 로직",
+        "feedback": "중첩 줄이고 가독성 향상",
+        "tags": [
+          "Clean Code"
+        ],
+        "createdAt": "2024-11-22T11:00:00Z"
+      },
+      {
+        "id": 9,
+        "type": "code_review",
+        "title": "👨‍💻 매직 넘버 제거",
+        "before": "if(status === 200) { }",
+        "after": "const HTTP_OK = 200\nif(status === HTTP_OK) { }",
+        "feedback": "상수명으로 의도 명확히",
+        "tags": [
+          "Clean Code"
+        ],
+        "createdAt": "2024-11-22T12:00:00Z"
+      },
+      {
+        "id": 10,
+        "type": "meme",
+        "title": "😂 Stackoverflow 복붙",
+        "image": "https://cdn.dev-onebite.com/meme1.png",
+        "description": "코드 복사하고 주석도 같이 복사",
+        "tags": [
+          "밈"
+        ],
+        "createdAt": "2024-11-23T10:00:00Z"
+      },
+      {
+        "id": 11,
+        "type": "meme",
+        "title": "😂 CSS 센터링",
+        "image": "https://cdn.dev-onebite.com/meme2.png",
+        "description": "여전히 어려운 센터 정렬",
+        "tags": [
+          "밈"
+        ],
+        "createdAt": "2024-11-23T11:00:00Z"
+      },
+      {
+        "id": 12,
+        "type": "meme",
+        "title": "😂 프론트엔드 프레임워크",
+        "image": "https://cdn.dev-onebite.com/meme3.png",
+        "description": "매주 새로운 프레임워크 등장",
+        "tags": [
+          "밈"
+        ],
+        "createdAt": "2024-11-23T12:00:00Z"
+      },
+      {
+        "id": 13,
+        "type": "interview",
+        "title": "🎯 이벤트 루프란?",
+        "question": "JavaScript 이벤트 루프를 설명하세요",
+        "answer": "콜스택과 태스크 큐를 감시하며 비동기 작업을 처리하는 메커니즘",
+        "tags": [
+          "JavaScript"
+        ],
+        "createdAt": "2024-11-24T10:00:00Z"
+      },
+      {
+        "id": 14,
+        "type": "interview",
+        "title": "🎯 REST API란?",
+        "question": "RESTful API의 특징을 설명하세요",
+        "answer": "HTTP 메서드를 활용한 자원 중심의 무상태 API 설계 방식",
+        "tags": [
+          "Backend"
+        ],
+        "createdAt": "2024-11-24T11:00:00Z"
+      },
+      {
+        "id": 15,
+        "type": "interview",
+        "title": "🎯 CORS란?",
+        "question": "CORS가 무엇이고 왜 필요한가요?",
+        "answer": "다른 출처의 리소스 공유를 제어하는 브라우저 보안 정책",
+        "tags": [
+          "Web"
+        ],
+        "createdAt": "2024-11-24T12:00:00Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 15,
+      "total": 1247,
+      "totalPages": 84,
+      "hasNext": true,
+      "hasPrev": false
+    },
+    "filters": {
+      "categories": [],
+      "types": [],
+      "excludedCount": 0
+    }
+  }
+}
