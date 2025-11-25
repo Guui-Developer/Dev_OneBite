@@ -24,11 +24,16 @@ export default function Category({}: CategoryPageProps) {
     try {
       setLocalLoading(true);
       const response = await CategoriesApi.getCategories();
-      if (response.success) {
-        setCategories(response.data.groups);
+      console.log('Category - API Response:', response);
+      if (response && response.groups) {
+        setCategories(response.groups);
+      } else {
+        console.warn('Category - No groups in response');
+        setCategories([]);
       }
     } catch (error) {
       console.error('Failed to load categories:', error);
+      setCategories([]);
     } finally {
       setLocalLoading(false);
     }

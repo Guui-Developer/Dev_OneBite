@@ -25,6 +25,7 @@ export function Welcome() {
             setCategories(response.groups)
         } catch (error) {
             console.error('Failed to load categories:', error)
+            setCategories([])
         } finally {
             setLocalLoading(false)
         }
@@ -49,7 +50,7 @@ export function Welcome() {
 
     return (
         <div className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]">
-            <BackgroundGradient variant="green-purple" />
+                <BackgroundGradient variant="green-purple" />
 
             <header className="mt-5 mb-4 relative z-20">
                 <div className="flex items-start justify-between mb-3">

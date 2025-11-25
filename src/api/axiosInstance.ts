@@ -2,7 +2,7 @@ import axios from "axios";
 import {API_BASE_URL, API_TIMEOUT_MS} from "./config";
 import {installLoggingInterceptor} from "./interceptors/loggingInterceptor";
 import {installRetryInterceptor} from "./interceptors/retryInterceptor";
-import {installResponseUnwrapInterceptor} from "./interceptors/responseUnwrapInterceptor";
+import {responseCommonInterceptor} from "./interceptors/responseCommonInterceptor.ts";
 
 const axiosInstance = axios.create({baseURL: API_BASE_URL, timeout: API_TIMEOUT_MS});
 axiosInstance.interceptors.request.use((c) => {
@@ -12,7 +12,7 @@ axiosInstance.interceptors.request.use((c) => {
 
 console.log("[axios] created baseURL is"+API_BASE_URL);
 
-installResponseUnwrapInterceptor(axiosInstance);
+responseCommonInterceptor(axiosInstance);
 installRetryInterceptor(axiosInstance);
 installLoggingInterceptor(axiosInstance);
 
