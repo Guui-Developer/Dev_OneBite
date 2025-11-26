@@ -10,7 +10,7 @@ import BackgroundGradient from '@/components/BackgroundGradient'
 
 export function Welcome() {
     const navigate = useNavigate()
-    const {selectedCategories, setSelectedCategories} = categoryStore()
+    const {selectedCategories, setSelectedCategories, setCategories: setCategoriesInStore} = categoryStore()
     const [categories, setCategories] = useState<CategoryGroup[]>([])
     const [localLoading, setLocalLoading] = useState(true)
 
@@ -23,6 +23,7 @@ export function Welcome() {
             setLocalLoading(true)
             const response = await CategoriesApi.getCategories()
             setCategories(response.groups)
+            setCategoriesInStore(response.groups, response.totalContent)
         } catch (error) {
             console.error('Failed to load categories:', error)
             setCategories([])

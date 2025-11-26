@@ -1,9 +1,9 @@
 import CodeBox from '@/components/CodeBox';
 import MarkdownBox from '@/components/MarkdownBox';
-import type { CodeReview } from '@/api/model/response/learndata';
+import type { CodeReviewData } from '@/api/model/response/learndata';
 
 interface CodeReviewContentProps {
-  content: CodeReview;
+  content: CodeReviewData;
 }
 
 export default function CodeReviewContent({ content }: CodeReviewContentProps) {

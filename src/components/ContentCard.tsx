@@ -16,6 +16,7 @@ import {
   MemeContent,
   InterviewContent
 } from '@/components/content';
+import { categoryStore } from '@/store/categoryStore';
 
 interface ContentCardProps {
   content: LearningData;
@@ -82,9 +83,25 @@ function renderContentByType(content: LearningData) {
 }
 
 export default function ContentCard({ content, isBookmarked = false, onToggleBookmark }: ContentCardProps) {
+  const { categories } = categoryStore();
+  const categoryIconMap = new Map<string, string>();
+
+  categories.forEach(group => {
+    group.categories.forEach(category => {
+      categoryIconMap.set(category.key, category.icon);
+      console.log('Mapping:', category.key, '->', category.icon);
+    });
+  });
+
+  console.log('ContentCard - categoryIconMap:', categoryIconMap);
+
+  const getCategoryIcon = (categoryKey: string): string | undefined => {
+    return categoryIconMap.get(categoryKey);
+  };
+
   return (
-    <Card padding="md" className="bg-[#1A1A1A] border-2 border-[#2D2D2D]">
-      <div className="mb-3 flex items-center justify-between">
+    <Card padding="md" className="bg-[#1A1A1A] border-2 border-[#2D2D2D] flex-col flex gap-4">
+      <div className="flex items-center justify-between">
         <span className={cn(
           'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold',
           getTypeBadgeStyles(content.type)
@@ -111,7 +128,7 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
       </div>
 
       {/* Title */}
-      <h1 className="text-xl font-bold text-white mb-4">
+      <h1 className="text-xl font-bold text-white">
         {content.title}
       </h1>
 
@@ -122,14 +139,30 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2">
-        {content.tags.map((tag, idx) => (
-          <span
-            key={idx}
-            className="px-2 py-1 text-xs font-medium rounded-full bg-[#2D2D2D] text-[#B0B0B0] border border-[#444]"
-          >
-            {tag}
-          </span>
-        ))}
+        {content.tags.map((tag, idx) => {
+          const iconUrl = getCategoryIcon(tag);
+          console.log('Tag:', tag, 'Icon URL:', iconUrl);
+
+          return (
+            <span
+              key={idx}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-full bg-[#2D2D2D] text-[#D0D0D0] border border-[#444]"
+            >
+              {iconUrl && (
+                <img
+                  src={iconUrl}
+                  alt={tag}
+                  className="w-3.5 h-3.5"
+                  onError={(e) => {
+                    console.error('Failed to load icon:', iconUrl);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              )}
+              {tag}
+            </span>
+          );
+        })}
       </div>
     </Card>
   );

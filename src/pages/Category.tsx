@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { categoryStore } from '@/store/categoryStore.ts';
 import { Icon } from '@/components/icons/Icon';
-import { CategoriesApi } from '@/api';
-import type { CategoryGroup } from '@/api/model/response/category';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BackgroundGradient from '@/components/BackgroundGradient';
 
@@ -12,32 +10,8 @@ interface CategoryPageProps {}
 
 export default function Category({}: CategoryPageProps) {
   const navigate = useNavigate();
-  const { selectedCategories, setSelectedCategories } = categoryStore();
-  const [categories, setCategories] = useState<CategoryGroup[]>([]);
-  const [localLoading, setLocalLoading] = useState(true);
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      setLocalLoading(true);
-      const response = await CategoriesApi.getCategories();
-      console.log('Category - API Response:', response);
-      if (response && response.groups) {
-        setCategories(response.groups);
-      } else {
-        console.warn('Category - No groups in response');
-        setCategories([]);
-      }
-    } catch (error) {
-      console.error('Failed to load categories:', error);
-      setCategories([]);
-    } finally {
-      setLocalLoading(false);
-    }
-  };
+  const { selectedCategories, setSelectedCategories, categories } = categoryStore();
+  const [localLoading, setLocalLoading] = useState(false);
 
   const toggleInterest = (id: string) => {
     const newSelected = selectedCategories.includes(id)
@@ -86,8 +60,8 @@ export default function Category({}: CategoryPageProps) {
         {categories.map((group) => (
           <section key={group.groupKey}>
             <div className="flex gap-2 items-center mb-3">
-              <img src={group.icon} className="w-4 h-4 brightness-110 saturate-110" alt={group.group}/>
-              <h3 className="text-xl font-semibold text-[#E0E0E0]">{group.group}</h3>
+              <img src={group.icon} className="w-4 h-4 brightness-110 saturate-110" alt={group.groupLabel}/>
+              <h3 className="text-xl font-semibold text-[#E0E0E0]">{group.groupLabel}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {group.categories.map((category) => (
