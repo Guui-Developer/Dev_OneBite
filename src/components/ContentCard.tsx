@@ -50,7 +50,7 @@ function getTypeLabel(type: string): string {
     case 'code_review':
       return '👨‍💻 코드 리뷰';
     case 'meme':
-      return '😂 밈';
+      return '😂 밈 / 📰뉴스';
     case 'interview':
       return '🎯 면접 질문';
     default:
@@ -92,8 +92,6 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
       console.log('Mapping:', category.key, '->', category.icon);
     });
   });
-
-  console.log('ContentCard - categoryIconMap:', categoryIconMap);
 
   const getCategoryIcon = (categoryKey: string): string | undefined => {
     return categoryIconMap.get(categoryKey);
@@ -141,7 +139,6 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
       <div className="flex flex-wrap gap-2">
         {content.tags.map((tag, idx) => {
           const iconUrl = getCategoryIcon(tag);
-          console.log('Tag:', tag, 'Icon URL:', iconUrl);
 
           return (
             <span

@@ -55,7 +55,7 @@ export interface InterviewData extends BaseLearningData {
     type: 'interview';
     question: string;
     answer: string;
-    tail: string[];
+    tails: string[];
 }
 
 
@@ -65,18 +65,16 @@ export interface InterviewData extends BaseLearningData {
 
 /** 페이지네이션 정보 */
 export interface PaginationInfo {
-    page: number;
+    lastSeenId: number;
     limit: number;
     total: number;
-    totalPages: number;
     hasNext: boolean;
-    hasPrev: boolean;
+    returnedCount: number;
 }
 
 export interface FilterInfo {
     categories: string[];
-    types: string[];
-    excludedCount: number;
+    appliedCount: number;
 }
 
 export interface GetLearningDataListData {
