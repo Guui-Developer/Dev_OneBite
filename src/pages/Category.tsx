@@ -11,7 +11,7 @@ interface CategoryPageProps {}
 export default function Category({}: CategoryPageProps) {
   const navigate = useNavigate();
   const { selectedCategories, setSelectedCategories, categories } = categoryStore();
-  const [localLoading, setLocalLoading] = useState(false);
+  const [localLoading] = useState(false);
 
   const toggleInterest = (id: string) => {
     const newSelected = selectedCategories.includes(id)

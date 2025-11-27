@@ -18,12 +18,16 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}']
+      },
       manifest: {
         name: 'Dev OneBite',
         short_name: 'OneBite',
         description: 'Dev OneBite PWA Application',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        theme_color: '#1E1E1E',
+        background_color: '#1E1E1E',
         display: 'standalone',
         icons: [
           {
