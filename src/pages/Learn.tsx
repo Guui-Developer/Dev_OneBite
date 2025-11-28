@@ -19,6 +19,8 @@ export default function Learn({}: LearnProps) {
     const [localLoading, setLocalLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const seedRef = useRef<number>(894561);
+    const lastSeenIdRef = useRef<number>(0);
 
     useEffect(() => {
         if (selectedCategories.length === 0) {
@@ -32,14 +34,19 @@ export default function Learn({}: LearnProps) {
         try {
             setLoading(true);
             setLocalLoading(true);
-            const response = await ContentApi.getContentList({
-                categories: 'javascript',
-                limit: 20,
-                lastSeenId: 20,
-                seed: 894561,
-            });
 
+            lastSeenIdRef.current = 0;
+            const response = await ContentApi.getContentList({
+                categories: 'javascript,react',
+                limit: 20,
+                lastSeenId: 0,
+                seed: seedRef.current,
+            });
             setContentList(response.content);
+
+            if (response.content.length > 0) {
+                lastSeenIdRef.current = response.content[response.content.length - 1].id;
+            }
         } catch (error) {
             console.error('Failed to load content:', error);
         } finally {
@@ -53,14 +60,22 @@ export default function Learn({}: LearnProps) {
 
         try {
             setIsLoadingMore(true);
+
+            // 현재 lastSeenId를 사용하여 다음 콘텐츠 조회
             const response = await ContentApi.getContentList({
-                categories: 'javascript',
+                categories: 'javascript,react',
                 limit: 20,
-                lastSeenId: 20,
-                seed: 894561,
+                lastSeenId: lastSeenIdRef.current,
+                seed: seedRef.current, // 세션 동안 같은 seed 유지
             });
 
-            setContentList([...contentList, ...response.content])
+            // 새로운 콘텐츠를 기존 리스트에 추가
+            setContentList([...contentList, ...response.content]);
+
+            // 마지막으로 본 콘텐츠의 ID 업데이트
+            if (response.content.length > 0) {
+                lastSeenIdRef.current = response.content[response.content.length - 1].id;
+            }
         } catch (error) {
             console.error('Failed to load more content:', error);
         } finally {
@@ -138,14 +153,9 @@ export default function Learn({}: LearnProps) {
 
             <div
                 ref={containerRef}
-                className="h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth"
+                className="h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden"
                 style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}
             >
-                <style>{`
-          .shorts-container::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
 
                 {contentList.map((content, index) => (
                     <div

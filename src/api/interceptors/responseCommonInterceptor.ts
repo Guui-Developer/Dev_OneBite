@@ -20,11 +20,9 @@ export function responseCommonInterceptor(instance: AxiosInstance) {
                     res.data = d.data;
                     return res;
                 }
-
-                return d;
             }
 
-            return d;
+            return res;
         },
         (e) => Promise.reject(e)
     );

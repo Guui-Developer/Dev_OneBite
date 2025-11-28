@@ -10,8 +10,8 @@ export class ContentApi {
     const queryParams = new URLSearchParams();
     if (params.categories) queryParams.append('categories', params.categories);
     if (params.limit) queryParams.append('limit', params.limit.toString());
-    if (params.lastSeenId) queryParams.append('limit', params.lastSeenId.toString());
-    if (params.seed) queryParams.append('limit', params.seed.toString());
+    if (params.lastSeenId !== undefined) queryParams.append('lastSeenId', params.lastSeenId.toString());
+    if (params.seed) queryParams.append('seed', params.seed.toString());
 
 
     return httpClient.get<GetLearningDataListData>(
