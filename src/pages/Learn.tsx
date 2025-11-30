@@ -32,11 +32,8 @@ export default function Learn({}: LearnProps) {
         try {
             setLoading(true);
             setLocalLoading(true);
-
-            // categories를 문자열로 변환
             const categoriesString = selectedCategories.join(',');
 
-            // 카테고리 조합이 변경되었으면 seed와 lastSeenId 초기화
             if (learnState.categories !== categoriesString) {
                 updateLearnState({
                     categories: categoriesString,
@@ -72,18 +69,15 @@ export default function Learn({}: LearnProps) {
         try {
             setIsLoadingMore(true);
 
-            // 현재 lastSeenId를 사용하여 다음 콘텐츠 조회
             const response = await ContentApi.getContentList({
                 categories: learnState.categories,
                 limit: 20,
                 lastSeenId: learnState.lastSeenId,
-                seed: learnState.seed, // 세션 동안 같은 seed 유지
+                seed: learnState.seed,
             });
 
-            // 새로운 콘텐츠를 기존 리스트에 추가
             setContentList([...contentList, ...response.content]);
 
-            // 마지막으로 본 콘텐츠의 ID 업데이트
             if (response.content.length > 0) {
                 updateLearnState({
                     lastSeenId: response.content[response.content.length - 1].id,

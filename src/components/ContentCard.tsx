@@ -82,19 +82,26 @@ function renderContentByType(content: LearningData) {
   return null;
 }
 
+interface CategoryInfo {
+  icon: string;
+  label: string;
+}
+
 export default function ContentCard({ content, isBookmarked = false, onToggleBookmark }: ContentCardProps) {
   const { categories } = categoryStore();
-  const categoryIconMap = new Map<string, string>();
+  const categoryMap = new Map<string, CategoryInfo>();
 
   categories.forEach(group => {
     group.categories.forEach(category => {
-      categoryIconMap.set(category.key, category.icon);
-      console.log('Mapping:', category.key, '->', category.icon);
+      categoryMap.set(category.key, {
+        icon: category.icon,
+        label: category.label,
+      });
     });
   });
 
-  const getCategoryIcon = (categoryKey: string): string | undefined => {
-    return categoryIconMap.get(categoryKey);
+  const getCategoryInfo = (categoryKey: string): CategoryInfo | undefined => {
+    return categoryMap.get(categoryKey);
   };
 
   return (
@@ -138,25 +145,25 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
       {/* Tags */}
       <div className="flex flex-wrap gap-2">
         {content.tags.map((tag, idx) => {
-          const iconUrl = getCategoryIcon(tag);
+          const categoryInfo = getCategoryInfo(tag);
 
           return (
             <span
               key={idx}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-full bg-[#2D2D2D] text-[#D0D0D0] border border-[#444]"
             >
-              {iconUrl && (
+              {categoryInfo?.icon && (
                 <img
-                  src={iconUrl}
-                  alt={tag}
+                  src={categoryInfo.icon}
+                  alt={categoryInfo.label}
                   className="w-3.5 h-3.5"
                   onError={(e) => {
-                    console.error('Failed to load icon:', iconUrl);
+                    console.error('Failed to load icon:', categoryInfo.icon);
                     e.currentTarget.style.display = 'none';
                   }}
                 />
               )}
-              {tag}
+              {categoryInfo?.label || tag}
             </span>
           );
         })}

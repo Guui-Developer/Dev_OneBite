@@ -5,12 +5,14 @@ import PageHeader from '@/components/PageHeader';
 import BackgroundGradient from '@/components/BackgroundGradient';
 import StatsCard from '@/components/StatsCard';
 import HistoryItem from '@/components/HistoryItem';
+import {categoryStore} from "@/store/categoryStore.ts";
 
 interface HistoryProps {}
 
 export default function History({}: HistoryProps) {
   const navigate = useNavigate();
-  const { history, stats, bookmarks, clearHistory, clearBookmarks, toggleBookmark, isBookmarked } = historyStore();
+  const { history, stats, bookmarks, clearHistory, clearBookmarks, toggleBookmark, isBookmarked, reset: resetHistory } = historyStore();
+  const { reset: resetCategory } = categoryStore();
 
   const handleClearHistory = () => {
     if (window.confirm('모든 히스토리를 삭제하시겠습니까?')) {
@@ -24,6 +26,15 @@ export default function History({}: HistoryProps) {
     }
   };
 
+  const handleResetAll = () => {
+    if (window.confirm('⚠️ 모든 데이터를 삭제하고 앱을 초기화하시겠습니까?\n\n- 학습 히스토리\n- 북마크\n- 학습 진행 상태\n- 모든 설정\n\n이 작업은 되돌릴 수 없습니다.')) {
+      localStorage.clear();
+      resetHistory();
+      resetCategory();
+      navigate('/', { replace: true });
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-[#0A0A0A] relative">
       <BackgroundGradient variant="cyan-purple" />
@@ -31,6 +42,15 @@ export default function History({}: HistoryProps) {
       <PageHeader
         title="학습 히스토리"
         showBack={true}
+        rightAction={
+          <button
+            onClick={handleResetAll}
+            className="p-2 hover:bg-red-500/10 rounded-lg transition-colors group"
+            title="앱 초기화"
+          >
+            <Icon name="RotateCcw" type="lucide" size={20} className="text-red-500 group-hover:rotate-180 transition-transform duration-500" />
+          </button>
+        }
       />
 
       {/* Main Content */}

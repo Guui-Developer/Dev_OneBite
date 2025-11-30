@@ -76,8 +76,8 @@ export const historyStore = create<HistoryStore>()(
             ...filtered,
           ];
 
-          // 최대 100개까지만 보관
-          const limitedHistory = newHistory.slice(0, 100);
+          // 최대 20개까지만 보관
+          const limitedHistory = newHistory.slice(0, 20);
 
           // 통계 업데이트
           const today = new Date().toDateString();
@@ -120,11 +120,19 @@ export const historyStore = create<HistoryStore>()(
         set((state) => {
           const isAlreadyBookmarked = state.bookmarks.some((item) => item.content.id === content.id);
 
-          const bookmarks = isAlreadyBookmarked
-            ? state.bookmarks.filter((item) => item.content.id !== content.id)
-            : [...state.bookmarks, { content, bookmarkedAt: new Date().toISOString() }];
-
-          return { bookmarks };
+          if (isAlreadyBookmarked) {
+            // 북마크 제거
+            const bookmarks = state.bookmarks.filter((item) => item.content.id !== content.id);
+            return { bookmarks };
+          } else {
+            // 북마크 추가 (최대 100개까지)
+            const newBookmarks = [
+              { content, bookmarkedAt: new Date().toISOString() },
+              ...state.bookmarks,
+            ];
+            const limitedBookmarks = newBookmarks.slice(0, 100);
+            return { bookmarks: limitedBookmarks };
+          }
         }),
 
       isBookmarked: (contentId) => get().bookmarks.some((item) => item.content.id === contentId),
@@ -144,7 +152,14 @@ export const historyStore = create<HistoryStore>()(
           learnState: initialLearnState,
         }),
 
-      reset: () => set(initialState),
+      reset: () => set({
+        ...initialState,
+        learnState: {
+          lastSeenId: 0,
+          seed: Math.floor(Math.random() * 1000000),
+          categories: '',
+        },
+      }),
     }),
     {
       name: 'history-storage',

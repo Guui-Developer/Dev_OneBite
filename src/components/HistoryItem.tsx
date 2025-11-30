@@ -1,5 +1,11 @@
 import { Icon } from '@/components/icons/Icon';
 import type { LearningData } from '@/api/model/response/learndata';
+import { categoryStore } from '@/store/categoryStore';
+
+interface CategoryInfo {
+  icon: string;
+  label: string;
+}
 
 interface HistoryItemProps {
   content: LearningData;
@@ -50,6 +56,22 @@ export default function HistoryItem({
   showViewedAt = true,
   compact = false
 }: HistoryItemProps) {
+  const { categories } = categoryStore();
+  const categoryMap = new Map<string, CategoryInfo>();
+
+  categories.forEach(group => {
+    group.categories.forEach(category => {
+      categoryMap.set(category.key, {
+        icon: category.icon,
+        label: category.label,
+      });
+    });
+  });
+
+  const getCategoryInfo = (categoryKey: string): CategoryInfo | undefined => {
+    return categoryMap.get(categoryKey);
+  };
+
   return (
     <div className={`${compact ? 'p-2.5' : 'p-4'} rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] hover:border-[#444] transition-all`}>
       <div className="flex items-start gap-2.5">
@@ -82,14 +104,17 @@ export default function HistoryItem({
 
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap gap-1">
-              {content.tags.slice(0, compact ? 1 : 2).map((tag, idx) => (
-                <span
-                  key={idx}
-                  className={`px-2 py-0.5 rounded-full bg-[#2D2D2D] text-[#B0B0B0] ${compact ? 'text-[11px]' : 'text-xs'}`}
-                >
-                  {tag}
-                </span>
-              ))}
+              {content.tags.slice(0, compact ? 1 : 2).map((tag, idx) => {
+                const categoryInfo = getCategoryInfo(tag);
+                return (
+                  <span
+                    key={idx}
+                    className={`px-2 py-0.5 rounded-full bg-[#2D2D2D] text-[#B0B0B0] ${compact ? 'text-[11px]' : 'text-xs'}`}
+                  >
+                    {categoryInfo?.label || tag}
+                  </span>
+                );
+              })}
             </div>
             {showViewedAt && viewedAt && (
               <p className={`text-[#6B7280] whitespace-nowrap ml-2 ${compact ? 'text-[11px]' : 'text-xs'}`}>
