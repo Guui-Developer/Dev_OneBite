@@ -71,7 +71,7 @@ jobs:
       # 7) S3에 업로드
       - name: Deploy to S3
         run: |
-          cd build/react
+          cd dist
           if [ "${{ inputs.stage }}" = "prod" ]; then
             aws s3 sync . s3://${{ secrets.S3_BUCKET_PROD }} --delete
           else
