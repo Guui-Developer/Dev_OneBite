@@ -5,8 +5,9 @@ interface HistoryItemProps {
   content: LearningData;
   viewedAt?: string;
   isBookmarked: boolean;
-  onToggleBookmark: (contentId: number) => void;
+  onToggleBookmark: (content: LearningData) => void;
   showViewedAt?: boolean;
+  compact?: boolean;
 }
 
 function getTypeEmoji(type: string): string {
@@ -46,24 +47,25 @@ export default function HistoryItem({
   viewedAt,
   isBookmarked,
   onToggleBookmark,
-  showViewedAt = true
+  showViewedAt = true,
+  compact = false
 }: HistoryItemProps) {
   return (
-    <div className="p-4 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] hover:border-[#444] transition-all">
-      <div className="flex items-start gap-3">
-        <div className="text-2xl flex-shrink-0">
+    <div className={`${compact ? 'p-2.5' : 'p-4'} rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] hover:border-[#444] transition-all`}>
+      <div className="flex items-start gap-2.5">
+        <div className={`${compact ? 'text-lg' : 'text-2xl'} flex-shrink-0`}>
           {getTypeEmoji(content.type)}
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1">
-            <h4 className="font-semibold text-white text-sm line-clamp-2">
+            <h4 className={`font-semibold text-white ${compact ? 'text-sm line-clamp-1' : 'text-sm line-clamp-2'}`}>
               {content.title}
             </h4>
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onToggleBookmark(content.id);
+                onToggleBookmark(content);
               }}
               className={`flex-shrink-0 p-1 hover:bg-[#2D2D2D] rounded transition-all ${
                 isBookmarked ? 'text-red-500' : 'text-[#6B7280]'
@@ -72,7 +74,7 @@ export default function HistoryItem({
               <Icon
                 name="Heart"
                 type="lucide"
-                size={16}
+                size={compact ? 14 : 16}
                 className={isBookmarked ? 'fill-current' : ''}
               />
             </button>
@@ -80,17 +82,17 @@ export default function HistoryItem({
 
           <div className="flex items-center justify-between">
             <div className="flex flex-wrap gap-1">
-              {content.tags.slice(0, 2).map((tag, idx) => (
+              {content.tags.slice(0, compact ? 1 : 2).map((tag, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-0.5 text-xs rounded-full bg-[#2D2D2D] text-[#B0B0B0]"
+                  className={`px-2 py-0.5 rounded-full bg-[#2D2D2D] text-[#B0B0B0] ${compact ? 'text-[11px]' : 'text-xs'}`}
                 >
                   {tag}
                 </span>
               ))}
             </div>
             {showViewedAt && viewedAt && (
-              <p className="text-xs text-[#6B7280] whitespace-nowrap ml-2">
+              <p className={`text-[#6B7280] whitespace-nowrap ml-2 ${compact ? 'text-[11px]' : 'text-xs'}`}>
                 {formatDate(viewedAt)}
               </p>
             )}

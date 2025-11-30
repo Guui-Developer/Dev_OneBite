@@ -10,7 +10,7 @@ interface HistoryProps {}
 
 export default function History({}: HistoryProps) {
   const navigate = useNavigate();
-  const { history, stats, bookmarks, clearHistory, toggleBookmark, isBookmarked } = historyStore();
+  const { history, stats, bookmarks, clearHistory, clearBookmarks, toggleBookmark, isBookmarked } = historyStore();
 
   const handleClearHistory = () => {
     if (window.confirm('모든 히스토리를 삭제하시겠습니까?')) {
@@ -18,26 +18,23 @@ export default function History({}: HistoryProps) {
     }
   };
 
+  const handleClearBookmarks = () => {
+    if (window.confirm('모든 북마크를 삭제하시겠습니까?')) {
+      clearBookmarks();
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0A] relative overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#0A0A0A] relative">
       <BackgroundGradient variant="cyan-purple" />
 
       <PageHeader
         title="학습 히스토리"
         showBack={true}
-        rightAction={
-          <button
-            onClick={handleClearHistory}
-            className="p-2 hover:bg-[#1A1A1A] rounded-lg transition-colors text-red-500 disabled:opacity-30"
-            disabled={history.length === 0}
-          >
-            <Icon name="Trash2" type="lucide" size={20} />
-          </button>
-        }
       />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-5 pb-6 relative z-10">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 pb-6 relative z-10">
         <StatsCard stats={stats} />
 
         {/* Bookmarks Section */}
@@ -47,38 +44,63 @@ export default function History({}: HistoryProps) {
               <Icon name="Heart" type="lucide" size={20} className="text-red-500 fill-current" />
               북마크
             </h3>
-            <span className="text-sm text-[#B0B0B0]">{bookmarks.length}개</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-[#B0B0B0]">{bookmarks.length}개</span>
+              {bookmarks.length > 0 && (
+                <button
+                  onClick={handleClearBookmarks}
+                  className="p-1.5 hover:bg-[#1A1A1A] rounded-lg transition-colors text-red-500"
+                >
+                  <Icon name="Trash2" type="lucide" size={16} />
+                </button>
+              )}
+            </div>
           </div>
 
           {bookmarks.length === 0 ? (
-            <div className="p-6 rounded-2xl bg-[#1A1A1A] border border-[#2D2D2D] text-center">
-              <div className="text-4xl mb-3">❤️</div>
-              <p className="text-[#B0B0B0]">북마크한 콘텐츠가 없습니다.</p>
-              <p className="text-sm text-[#6B7280] mt-1">
+            <div className="p-4 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-center">
+              <div className="text-3xl mb-2">❤️</div>
+              <p className="text-sm text-[#B0B0B0]">북마크한 콘텐츠가 없습니다.</p>
+              <p className="text-xs text-[#6B7280] mt-1">
                 마음에 드는 콘텐츠를 저장해보세요!
               </p>
             </div>
           ) : (
-            <div className="space-y-2">
-              {history
-                .filter((item) => isBookmarked(item.content.id))
-                .map((item, index) => (
-                  <HistoryItem
-                    key={`bookmark-${item.content.id}-${index}`}
-                    content={item.content}
-                    viewedAt={item.viewedAt}
-                    isBookmarked={true}
-                    onToggleBookmark={toggleBookmark}
-                    showViewedAt={false}
-                  />
-                ))}
+            <div className="space-y-1.5 max-h-[320px] overflow-y-auto pr-1">
+              {bookmarks.slice(0, 10).map((item, index) => (
+                <HistoryItem
+                  key={`bookmark-${item.content.id}-${index}`}
+                  content={item.content}
+                  viewedAt={item.bookmarkedAt}
+                  isBookmarked={true}
+                  onToggleBookmark={toggleBookmark}
+                  showViewedAt={false}
+                  compact={true}
+                />
+              ))}
             </div>
           )}
         </div>
 
         {/* History List */}
         <div className="mb-6">
-          <h3 className="text-lg font-bold text-white mb-3">최근 학습</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              <Icon name="Clock" type="lucide" size={20} className="text-[#00D9FF]" />
+              최근 학습
+            </h3>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-[#B0B0B0]">{history.length}개</span>
+              {history.length > 0 && (
+                <button
+                  onClick={handleClearHistory}
+                  className="p-1.5 hover:bg-[#1A1A1A] rounded-lg transition-colors text-red-500"
+                >
+                  <Icon name="Trash2" type="lucide" size={16} />
+                </button>
+              )}
+            </div>
+          </div>
 
           {history.length === 0 ? (
             <div className="p-6 rounded-2xl bg-[#1A1A1A] border border-[#2D2D2D] text-center">
@@ -95,7 +117,7 @@ export default function History({}: HistoryProps) {
             </div>
           ) : (
             <div className="space-y-2">
-              {history.slice(0, 20).map((item, index) => (
+              {history.map((item, index) => (
                 <HistoryItem
                   key={`history-${item.content.id}-${index}`}
                   content={item.content}

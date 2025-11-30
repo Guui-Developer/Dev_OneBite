@@ -7,6 +7,11 @@ interface HistoryItem {
   viewedAt: string;
 }
 
+interface BookmarkItem {
+  content: LearningData;
+  bookmarkedAt: string;
+}
+
 interface HistoryStats {
   today: number;
   total: number;
@@ -14,19 +19,36 @@ interface HistoryStats {
   lastVisit: string;
 }
 
+interface LearnState {
+  lastSeenId: number;
+  seed: number;
+  categories: string;
+}
+
 interface HistoryStore {
   history: HistoryItem[];
   stats: HistoryStats;
-  bookmarks: number[];
+  bookmarks: BookmarkItem[];
+  learnState: LearnState;
 
   // Actions
   addToHistory: (content: LearningData) => void;
   clearHistory: () => void;
+  clearBookmarks: () => void;
   updateStats: (stats: Partial<HistoryStats>) => void;
-  toggleBookmark: (contentId: number) => void;
+  toggleBookmark: (content: LearningData) => void;
   isBookmarked: (contentId: number) => boolean;
+  getBookmarkedContent: (contentId: number) => LearningData | undefined;
+  updateLearnState: (state: Partial<LearnState>) => void;
+  resetLearnState: () => void;
   reset: () => void;
 }
+
+const initialLearnState: LearnState = {
+  lastSeenId: 0,
+  seed: Math.floor(Math.random() * 1000000),
+  categories: '',
+};
 
 const initialState = {
   history: [],
@@ -37,6 +59,7 @@ const initialState = {
     lastVisit: new Date().toISOString(),
   },
   bookmarks: [],
+  learnState: initialLearnState,
 };
 
 export const historyStore = create<HistoryStore>()(
@@ -83,20 +106,43 @@ export const historyStore = create<HistoryStore>()(
           },
         }),
 
+      clearBookmarks: () =>
+        set({
+          bookmarks: [],
+        }),
+
       updateStats: (stats) =>
         set((state) => ({
           stats: { ...state.stats, ...stats },
         })),
 
-      toggleBookmark: (contentId) =>
+      toggleBookmark: (content) =>
         set((state) => {
-          const bookmarks = state.bookmarks.includes(contentId)
-            ? state.bookmarks.filter((id) => id !== contentId)
-            : [...state.bookmarks, contentId];
+          const isAlreadyBookmarked = state.bookmarks.some((item) => item.content.id === content.id);
+
+          const bookmarks = isAlreadyBookmarked
+            ? state.bookmarks.filter((item) => item.content.id !== content.id)
+            : [...state.bookmarks, { content, bookmarkedAt: new Date().toISOString() }];
+
           return { bookmarks };
         }),
 
-      isBookmarked: (contentId) => get().bookmarks.includes(contentId),
+      isBookmarked: (contentId) => get().bookmarks.some((item) => item.content.id === contentId),
+
+      getBookmarkedContent: (contentId) => {
+        const bookmark = get().bookmarks.find((item) => item.content.id === contentId);
+        return bookmark?.content;
+      },
+
+      updateLearnState: (state) =>
+        set((prevState) => ({
+          learnState: { ...prevState.learnState, ...state },
+        })),
+
+      resetLearnState: () =>
+        set({
+          learnState: initialLearnState,
+        }),
 
       reset: () => set(initialState),
     }),

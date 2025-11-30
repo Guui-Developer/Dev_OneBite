@@ -15,12 +15,10 @@ export default function Learn({}: LearnProps) {
     const navigate = useNavigate();
     const {selectedCategories} = categoryStore();
     const {contentList, setContentList, setLoading} = contentStore();
-    const {addToHistory, toggleBookmark, isBookmarked} = historyStore();
+    const {addToHistory, toggleBookmark, isBookmarked, learnState, updateLearnState} = historyStore();
     const [localLoading, setLocalLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const seedRef = useRef<number>(894561);
-    const lastSeenIdRef = useRef<number>(0);
 
     useEffect(() => {
         if (selectedCategories.length === 0) {
@@ -35,17 +33,30 @@ export default function Learn({}: LearnProps) {
             setLoading(true);
             setLocalLoading(true);
 
-            lastSeenIdRef.current = 0;
+            // categories를 문자열로 변환
+            const categoriesString = selectedCategories.join(',');
+
+            // 카테고리 조합이 변경되었으면 seed와 lastSeenId 초기화
+            if (learnState.categories !== categoriesString) {
+                updateLearnState({
+                    categories: categoriesString,
+                    seed: Math.floor(Math.random() * 1000000),
+                    lastSeenId: 0,
+                });
+            }
+
             const response = await ContentApi.getContentList({
-                categories: 'javascript,react',
+                categories: categoriesString,
                 limit: 20,
                 lastSeenId: 0,
-                seed: seedRef.current,
+                seed: learnState.seed,
             });
             setContentList(response.content);
 
             if (response.content.length > 0) {
-                lastSeenIdRef.current = response.content[response.content.length - 1].id;
+                updateLearnState({
+                    lastSeenId: response.content[response.content.length - 1].id,
+                });
             }
         } catch (error) {
             console.error('Failed to load content:', error);
@@ -63,10 +74,10 @@ export default function Learn({}: LearnProps) {
 
             // 현재 lastSeenId를 사용하여 다음 콘텐츠 조회
             const response = await ContentApi.getContentList({
-                categories: 'javascript,react',
+                categories: learnState.categories,
                 limit: 20,
-                lastSeenId: lastSeenIdRef.current,
-                seed: seedRef.current, // 세션 동안 같은 seed 유지
+                lastSeenId: learnState.lastSeenId,
+                seed: learnState.seed, // 세션 동안 같은 seed 유지
             });
 
             // 새로운 콘텐츠를 기존 리스트에 추가
@@ -74,14 +85,16 @@ export default function Learn({}: LearnProps) {
 
             // 마지막으로 본 콘텐츠의 ID 업데이트
             if (response.content.length > 0) {
-                lastSeenIdRef.current = response.content[response.content.length - 1].id;
+                updateLearnState({
+                    lastSeenId: response.content[response.content.length - 1].id,
+                });
             }
         } catch (error) {
             console.error('Failed to load more content:', error);
         } finally {
             setIsLoadingMore(false);
         }
-    }, [isLoadingMore, selectedCategories, contentList, setContentList]);
+    }, [isLoadingMore, learnState, contentList, setContentList, updateLearnState]);
 
     useEffect(() => {
         if (contentList.length === 0) return;
@@ -116,7 +129,10 @@ export default function Learn({}: LearnProps) {
     }, [contentList, isLoadingMore, loadMoreContent, addToHistory]);
 
     const handleToggleBookmark = (contentId: number) => {
-        toggleBookmark(contentId);
+        const content = contentList.find(c => c.id === contentId);
+        if (content) {
+            toggleBookmark(content);
+        }
     };
 
     if (localLoading || contentList.length === 0) {
