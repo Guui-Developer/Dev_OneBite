@@ -1,4 +1,4 @@
-name: Build & Deploy Galashow
+name: Build & Deploy DevOneBite
 
 on:
   workflow_dispatch:
