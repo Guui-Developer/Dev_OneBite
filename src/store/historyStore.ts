@@ -118,11 +118,11 @@ export const historyStore = create<HistoryStore>()(
 
       toggleBookmark: (content) =>
         set((state) => {
-          const isAlreadyBookmarked = state.bookmarks.some((item) => item.content.id === content.id);
+          const isAlreadyBookmarked = state.bookmarks.some((item) => item.content?.id === content.id);
 
           if (isAlreadyBookmarked) {
             // 북마크 제거
-            const bookmarks = state.bookmarks.filter((item) => item.content.id !== content.id);
+            const bookmarks = state.bookmarks.filter((item) => item.content?.id !== content.id);
             return { bookmarks };
           } else {
             // 북마크 추가 (최대 100개까지)
@@ -135,10 +135,10 @@ export const historyStore = create<HistoryStore>()(
           }
         }),
 
-      isBookmarked: (contentId) => get().bookmarks.some((item) => item.content.id === contentId),
+      isBookmarked: (contentId) => get().bookmarks.some((item) => item.content?.id === contentId),
 
       getBookmarkedContent: (contentId) => {
-        const bookmark = get().bookmarks.find((item) => item.content.id === contentId);
+        const bookmark = get().bookmarks.find((item) => item.content?.id === contentId);
         return bookmark?.content;
       },
 
