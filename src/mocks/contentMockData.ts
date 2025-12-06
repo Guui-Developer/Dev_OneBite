@@ -3,6 +3,6 @@ import mockData from './mockData.json';
 
 
 export function getMockContentList(): GetLearningDataListData {
-  const presetKey = `preset1`;
+  const presetKey = `preset2`;
   return mockData[presetKey] as GetLearningDataListData;
 }
