@@ -3,6 +3,7 @@ import {Welcome} from './pages/Welcome'
 import History from './pages/History'
 import Category from './pages/Category'
 import Learn from './pages/Learn'
+import Terms from './pages/Terms'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/category" element={<Category />} />
             <Route path="/learn" element={<Learn />} />
             <Route path="/history" element={<History />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
         </BrowserRouter>
       </div>
