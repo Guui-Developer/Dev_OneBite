@@ -47,6 +47,7 @@ export default function Learn({}: LearnProps) {
                 limit: 20,
                 lastSeenId: 0,
                 seed: learnState.seed,
+                isMock : true
             });
             setContentList(response.content);
 
@@ -74,6 +75,7 @@ export default function Learn({}: LearnProps) {
                 limit: 20,
                 lastSeenId: learnState.lastSeenId,
                 seed: learnState.seed,
+                isMock : true
             });
 
             setContentList([...contentList, ...response.content]);

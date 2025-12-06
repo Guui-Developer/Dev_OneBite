@@ -1,0 +1,217 @@
+{
+  "preset1": {
+    "content": [
+      {
+        "id": 301,
+        "type": "code_tip",
+        "title": "🔥 Go 에러 처리 패턴",
+        "code": "if err != nil {\n  return nil, err\n}",
+        "language": "Go",
+        "description": "Go의 명시적인 에러 처리로 안전한 코드를 작성해요",
+        "tags": ["go"],
+        "createdAt": "2024-11-28T09:00:00Z"
+      },
+      {
+        "id": 302,
+        "type": "code_tip",
+        "title": "✨ TypeScript 타입 가드",
+        "code": "if (typeof value === 'string') {\n  return value.toUpperCase()\n}",
+        "language": "TypeScript",
+        "description": "타입 가드로 안전하게 타입을 좁혀서 사용할 수 있어요",
+        "tags": ["typescript"],
+        "createdAt": "2024-11-28T09:30:00Z"
+      },
+      {
+        "id": 303,
+        "type": "code_tip",
+        "title": "💡 Kotlin data class",
+        "code": "data class User(val name: String, val age: Int)",
+        "language": "Kotlin",
+        "description": "data class로 equals, hashCode, toString을 자동 생성해요",
+        "tags": ["kotlin", "android"],
+        "createdAt": "2024-11-28T10:00:00Z"
+      },
+      {
+        "id": 304,
+        "type": "code_tip",
+        "title": "🎯 Spring @Transactional",
+        "code": "@Transactional\npublic void updateUser(User user) {\n  userRepository.save(user);\n}",
+        "language": "Java",
+        "description": "트랜잭션 어노테이션으로 DB 작업을 안전하게 관리해요",
+        "tags": ["java", "springboot"],
+        "createdAt": "2024-11-28T10:30:00Z"
+      },
+      {
+        "id": 305,
+        "type": "code_tip",
+        "title": "⚡ Rust 소유권 이동",
+        "code": "let s1 = String::from(\"hello\");\nlet s2 = s1;\n// s1은 더 이상 사용 불가",
+        "language": "Rust",
+        "description": "Rust는 소유권 이동으로 메모리 안전성을 보장해요",
+        "tags": ["rust"],
+        "createdAt": "2024-11-28T11:00:00Z"
+      },
+      {
+        "id": 306,
+        "type": "code_tip",
+        "title": "🔥 Django ORM 필터링",
+        "code": "users = User.objects.filter(\n  age__gte=18, is_active=True\n)",
+        "language": "Python",
+        "description": "Django ORM으로 직관적인 쿼리 작성이 가능해요",
+        "tags": ["python", "django", "postgresql"],
+        "createdAt": "2024-11-28T11:30:00Z"
+      },
+      {
+        "id": 307,
+        "type": "code_tip",
+        "title": "✨ Swift 옵셔널 바인딩",
+        "code": "if let name = user?.name {\n  print(\"Hello \\(name)\")\n}",
+        "language": "Swift",
+        "description": "안전하게 옵셔널 값을 추출해서 사용할 수 있어요",
+        "tags": ["swift", "ios"],
+        "createdAt": "2024-11-28T12:00:00Z"
+      },
+      {
+        "id": 308,
+        "type": "code_tip",
+        "title": "💡 Express 미들웨어",
+        "code": "app.use((req, res, next) => {\n  console.log(req.method)\n  next()\n})",
+        "language": "JavaScript",
+        "description": "미들웨어로 요청 전처리를 간편하게 구현할 수 있어요",
+        "tags": ["javascript", "nodejs", "express"],
+        "createdAt": "2024-11-28T12:30:00Z"
+      },
+      {
+        "id": 309,
+        "type": "code_tip",
+        "title": "🎯 C# LINQ 쿼리",
+        "code": "var adults = users\n  .Where(u => u.Age >= 18)\n  .Select(u => u.Name);",
+        "language": "C#",
+        "description": "LINQ로 컬렉션을 SQL처럼 직관적으로 다룰 수 있어요",
+        "tags": ["csharp"],
+        "createdAt": "2024-11-28T13:00:00Z"
+      },
+      {
+        "id": 310,
+        "type": "code_tip",
+        "title": "🔥 Vue Composition API",
+        "code": "const count = ref(0)\nconst increment = () => count.value++",
+        "language": "JavaScript",
+        "description": "Composition API로 로직을 재사용 가능하게 구성해요",
+        "tags": ["javascript", "vue"],
+        "createdAt": "2024-11-28T13:30:00Z"
+      },
+      {
+        "id": 311,
+        "type": "code_tip",
+        "title": "⚡ MongoDB 인덱스",
+        "code": "db.users.createIndex({ email: 1 })",
+        "language": "JavaScript",
+        "description": "인덱스를 생성하면 조회 성능이 크게 향상돼요",
+        "tags": ["mongodb", "nodejs"],
+        "createdAt": "2024-11-28T14:00:00Z"
+      },
+      {
+        "id": 312,
+        "type": "code_tip",
+        "title": "✨ Flutter StatefulWidget",
+        "code": "class Counter extends StatefulWidget {\n  @override\n  _CounterState createState() => _CounterState();\n}",
+        "language": "Dart",
+        "description": "StatefulWidget으로 상태를 가진 위젯을 만들어요",
+        "tags": ["flutter"],
+        "createdAt": "2024-11-28T14:30:00Z"
+      },
+      {
+        "id": 313,
+        "type": "code_tip",
+        "title": "💡 Next.js getServerSideProps",
+        "code": "export async function getServerSideProps() {\n  const data = await fetchData()\n  return { props: { data } }\n}",
+        "language": "JavaScript",
+        "description": "서버에서 데이터를 미리 가져와 SSR을 구현할 수 있어요",
+        "tags": ["javascript", "react", "nextjs"],
+        "createdAt": "2024-11-28T15:00:00Z"
+      },
+      {
+        "id": 314,
+        "type": "code_tip",
+        "title": "🎯 Docker 멀티 스테이지",
+        "code": "FROM node:18 AS build\nWORKDIR /app\nCOPY . .\nRUN npm run build",
+        "language": "Dockerfile",
+        "description": "멀티 스테이지 빌드로 이미지 크기를 최적화해요",
+        "tags": ["docker"],
+        "createdAt": "2024-11-28T15:30:00Z"
+      },
+      {
+        "id": 315,
+        "type": "code_tip",
+        "title": "🔥 Redis 캐싱 전략",
+        "code": "const cached = await redis.get(key)\nif (!cached) {\n  const data = await db.query()\n  await redis.set(key, data, 'EX', 3600)\n}",
+        "language": "JavaScript",
+        "description": "Redis로 자주 조회되는 데이터를 캐싱해서 성능을 높여요",
+        "tags": ["redis", "nodejs"],
+        "createdAt": "2024-11-28T16:00:00Z"
+      },
+      {
+        "id": 316,
+        "type": "code_tip",
+        "title": "⚡ Tailwind 유틸리티",
+        "code": "<div className=\"flex items-center\n  justify-between p-4 bg-blue-500\">",
+        "language": "JSX",
+        "description": "유틸리티 클래스로 빠르게 스타일링할 수 있어요",
+        "tags": ["tailwindcss", "react"],
+        "createdAt": "2024-11-28T16:30:00Z"
+      },
+      {
+        "id": 317,
+        "type": "code_tip",
+        "title": "✨ NestJS 의존성 주입",
+        "code": "@Injectable()\nexport class UserService {\n  constructor(private repo: UserRepository) {}\n}",
+        "language": "TypeScript",
+        "description": "데코레이터로 의존성을 자동으로 주입받을 수 있어요",
+        "tags": ["typescript", "nestjs", "nodejs"],
+        "createdAt": "2024-11-28T17:00:00Z"
+      },
+      {
+        "id": 318,
+        "type": "code_tip",
+        "title": "💡 PostgreSQL JSONB",
+        "code": "SELECT data->>'name' AS name\nFROM users\nWHERE data @> '{\"age\": 25}'",
+        "language": "SQL",
+        "description": "JSONB 타입으로 유연한 스키마를 구현할 수 있어요",
+        "tags": ["postgresql"],
+        "createdAt": "2024-11-28T17:30:00Z"
+      },
+      {
+        "id": 319,
+        "type": "code_tip",
+        "title": "🎯 GitHub Actions 워크플로우",
+        "code": "on:\n  push:\n    branches: [main]\njobs:\n  test:\n    runs-on: ubuntu-latest",
+        "language": "YAML",
+        "description": "코드 푸시 시 자동으로 테스트를 실행할 수 있어요",
+        "tags": ["githubactions", "git"],
+        "createdAt": "2024-11-28T18:00:00Z"
+      },
+      {
+        "id": 320,
+        "type": "code_tip",
+        "title": "🔥 React Native StyleSheet",
+        "code": "const styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    backgroundColor: '#fff'\n  }\n})",
+        "language": "JavaScript",
+        "description": "StyleSheet로 성능 최적화된 스타일을 정의해요",
+        "tags": ["javascript", "reactnative"],
+        "createdAt": "2024-11-28T18:30:00Z"
+      }
+    ],
+    "pagination": {
+      "lastSeenId": 320,
+      "limit": 20,
+      "total": 1287,
+      "hasNext": true,
+      "returnedCount": 20
+    },
+    "filters": {
+      "categories": ["go", "typescript", "kotlin", "java", "rust", "python", "swift", "csharp", "vue", "mongodb", "flutter", "nextjs", "docker", "redis", "tailwindcss", "nestjs", "postgresql", "githubactions", "reactnative"],
+      "appliedCount": 19
+    }
+  }
+}
