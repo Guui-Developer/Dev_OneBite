@@ -8,7 +8,7 @@ export default function Terms() {
   const [markdown, setMarkdown] = useState('');
 
   useEffect(() => {
-    fetch('/src/assets/terms.md')
+    fetch('/terms.md')
       .then((response) => response.text())
       .then((text) => setMarkdown(text))
       .catch((error) => console.error('Failed to load terms:', error));

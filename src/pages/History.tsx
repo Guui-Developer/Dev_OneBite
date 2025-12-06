@@ -151,7 +151,7 @@ export default function History({}: HistoryProps) {
         </div>
 
         {/* Footer Links */}
-        <div className="mt-8 pt-6 border-t border-[#2D2D2D] text-center">
+        <div className="mt-5 pt-3 border-t border-[#2D2D2D] text-center">
           <button
             onClick={() => navigate('/terms')}
             className="text-sm text-[#6B7280] hover:text-[#00D9FF] transition-colors inline-flex items-center gap-1"

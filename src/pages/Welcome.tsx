@@ -126,15 +126,6 @@ export function Welcome() {
                 >
                     {selectedCategories.length > 0 ? `시작하기 (${selectedCategories.length}개 선택됨)` : '시작하기'}
                 </button>
-                <div className="mt-3 text-center">
-                    <button
-                        onClick={() => navigate('/terms')}
-                        className="text-xs text-[#6B7280] hover:text-[#00D9FF] transition-colors inline-flex items-center gap-1"
-                    >
-                        <Icon name="FileText" type="lucide" size={12} />
-                        이용약관
-                    </button>
-                </div>
             </div>
         </div>
     )
