@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { historyStore } from '@/store/historyStore.ts';
 import { Icon } from '@/components/icons/Icon';
@@ -5,7 +6,9 @@ import PageHeader from '@/components/PageHeader';
 import BackgroundGradient from '@/components/BackgroundGradient';
 import StatsCard from '@/components/StatsCard';
 import HistoryItem from '@/components/HistoryItem';
-import {categoryStore} from "@/store/categoryStore.ts";
+import ContentModal from '@/components/ContentModal';
+import { categoryStore } from "@/store/categoryStore.ts";
+import type { LearningData } from '@/api/model/response/learndata';
 
 interface HistoryProps {}
 
@@ -13,6 +16,7 @@ export default function History({}: HistoryProps) {
   const navigate = useNavigate();
   const { history, stats, bookmarks, clearHistory, clearBookmarks, toggleBookmark, isBookmarked, reset: resetHistory } = historyStore();
   const { reset: resetCategory } = categoryStore();
+  const [selectedContent, setSelectedContent] = useState<LearningData | null>(null);
 
   const handleClearHistory = () => {
     if (window.confirm('모든 히스토리를 삭제하시겠습니까?')) {
@@ -94,6 +98,7 @@ export default function History({}: HistoryProps) {
                   viewedAt={item.bookmarkedAt}
                   isBookmarked={true}
                   onToggleBookmark={toggleBookmark}
+                  onClick={setSelectedContent}
                   showViewedAt={false}
                   compact={true}
                 />
@@ -144,6 +149,7 @@ export default function History({}: HistoryProps) {
                   viewedAt={item.viewedAt}
                   isBookmarked={isBookmarked(item.content.id)}
                   onToggleBookmark={toggleBookmark}
+                  onClick={setSelectedContent}
                 />
               ))}
             </div>
@@ -161,6 +167,16 @@ export default function History({}: HistoryProps) {
           </button>
         </div>
       </main>
+
+      {/* Content Modal */}
+      {selectedContent && (
+        <ContentModal
+          content={selectedContent}
+          isBookmarked={isBookmarked(selectedContent.id)}
+          onToggleBookmark={toggleBookmark}
+          onClose={() => setSelectedContent(null)}
+        />
+      )}
     </div>
   );
 }

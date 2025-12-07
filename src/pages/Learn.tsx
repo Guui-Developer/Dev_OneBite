@@ -173,9 +173,9 @@ export default function Learn({}: LearnProps) {
                     <div
                         key={content.id}
                         data-index={index}
-                        className="h-screen snap-start snap-always flex items-center justify-center p-4 pt-20 pb-8 relative overflow-y-auto"
+                        className="h-screen snap-start snap-always flex items-center justify-center px-4 pt-[60px] relative overflow-y-auto"
                     >
-                        <div className="max-w-2xl w-full">
+                        <div className="w-full">
                             <ContentCard
                                 content={content}
                                 isBookmarked={isBookmarked(content.id)}

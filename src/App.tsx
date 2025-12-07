@@ -8,7 +8,7 @@ import Terms from './pages/Terms'
 function App() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-      <div className="w-full max-w-md min-h-screen bg-[#0A0A0A] shadow-xl">
+      <div className="w-full max-w-lg min-h-screen bg-[#0A0A0A] shadow-xl">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Welcome />} />

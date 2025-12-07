@@ -12,6 +12,7 @@ interface HistoryItemProps {
   viewedAt?: string;
   isBookmarked: boolean;
   onToggleBookmark: (content: LearningData) => void;
+  onClick?: (content: LearningData) => void;
   showViewedAt?: boolean;
   compact?: boolean;
 }
@@ -53,6 +54,7 @@ export default function HistoryItem({
   viewedAt,
   isBookmarked,
   onToggleBookmark,
+  onClick,
   showViewedAt = true,
   compact = false
 }: HistoryItemProps) {
@@ -73,7 +75,10 @@ export default function HistoryItem({
   };
 
   return (
-    <div className={`${compact ? 'p-2.5' : 'p-4'} rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] hover:border-[#444] transition-all`}>
+    <div
+      className={`${compact ? 'p-2.5' : 'p-4'} rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] hover:border-[#444] transition-all ${onClick ? 'cursor-pointer' : ''}`}
+      onClick={() => onClick?.(content)}
+    >
       <div className="flex items-start gap-2.5">
         <div className={`${compact ? 'text-lg' : 'text-2xl'} flex-shrink-0`}>
           {getTypeEmoji(content.type)}
