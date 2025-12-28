@@ -45,9 +45,7 @@ export default function Learn({}: LearnProps) {
             const response = await ContentApi.getContentList({
                 categories: categoriesString,
                 limit: 20,
-                lastSeenId: 0,
-                seed: learnState.seed,
-                isMock : true
+                seed: learnState.seed
             });
             setContentList(response.content);
 
@@ -74,8 +72,7 @@ export default function Learn({}: LearnProps) {
                 categories: learnState.categories,
                 limit: 20,
                 lastSeenId: learnState.lastSeenId,
-                seed: learnState.seed,
-                isMock : true
+                seed: learnState.seed
             });
 
             setContentList([...contentList, ...response.content]);

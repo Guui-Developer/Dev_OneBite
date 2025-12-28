@@ -3,5 +3,4 @@
     limit?: number;
     lastSeenId?: number;
     seed?: number;
-    isMock : boolean
 }
