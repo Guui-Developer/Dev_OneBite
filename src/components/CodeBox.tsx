@@ -51,7 +51,7 @@ export default function CodeBox({
       )}
 
       {/* Code */}
-      <div className="relative">
+      <div className="relative max-h-[200px] overflow-y-auto">
         {!title && (
           <button
             onClick={handleCopy}
