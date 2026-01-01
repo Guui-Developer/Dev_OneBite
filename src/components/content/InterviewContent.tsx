@@ -8,7 +8,6 @@ interface InterviewContentProps {
 export default function InterviewContent({ content }: InterviewContentProps) {
   return (
     <div className="flex flex-col gap-3">
-
       <div>
         <h3 className="text-sm font-semibold text-[#00D9FF] mb-2">❓ 질문</h3>
         <div className="bg-[#2D2D2D] p-3 rounded-lg border border-[#00D9FF]">
@@ -22,9 +21,7 @@ export default function InterviewContent({ content }: InterviewContentProps) {
           <MarkdownBox content={content.answer} />
         </div>
       </div>
-
-
-        {content.tails && content.tails.length > 0 && (
+      {content.tails && content.tails.length > 0 && (
             <div className="space-y-2">
                 <h3 className="text-sm font-semibold text-[#FFFFF] mb-2">🔗 꼬리질문</h3>
                 {content.tails.map((tailQuestion, index) => (

@@ -10,7 +10,7 @@ interface MarkdownBoxProps {
 
 export default function MarkdownBox({ content, className = '' }: MarkdownBoxProps) {
   return (
-    <div className={`prose prose-sm max-w-none ${className}`}>
+    <div className={`prose prose-sm max-w-none [&>*:last-child]:mb-0 ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -47,7 +47,7 @@ export default function MarkdownBox({ content, className = '' }: MarkdownBoxProp
             <h3 className="text-lg font-semibold mt-4 mb-2 text-[#E0E0E0]">{children}</h3>
           ),
           p: ({ children }) => (
-            <p className="mb-4 leading-relaxed text-[#D0D0D0]">{children}</p>
+            <p className="last:mb-0 mb-4 leading-relaxed text-[#D0D0D0]">{children}</p>
           ),
           ul: ({ children }) => (
             <ul className="list-disc list-inside mb-4 space-y-2 text-[#D0D0D0]">{children}</ul>

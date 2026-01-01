@@ -138,7 +138,7 @@ export default function ContentModal({
     >
       <div
         ref={containerRef}
-        className={`h-screen snap-start snap-always flex items-start justify-center px-4 py-4 relative overflow-y-auto transition-transform duration-300 max-w-md mx-auto ${
+        className={`h-screen snap-start snap-always flex items-center justify-center px-4 py-4 relative overflow-y-auto transition-transform duration-300 max-w-md mx-auto ${
           isDragging ? '' : 'ease-out'
         }`}
         style={{
