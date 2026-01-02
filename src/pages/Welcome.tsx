@@ -1,22 +1,37 @@
 import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {cn} from '../lib/utils'
+import {isWebBrowser} from '@/lib/device'
 import {Icon} from '@/components/icons'
 import {categoryStore} from '../store/categoryStore.ts'
+import {historyStore} from '../store/historyStore.ts'
 import {CategoriesApi} from '@/api'
 import type {CategoryGroup} from '@/api/model/response/category'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import BackgroundGradient from '@/components/BackgroundGradient'
+import PWATutorial from '@/components/PWATutorial'
 
 export function Welcome() {
     const navigate = useNavigate()
     const {selectedCategories, setSelectedCategories, setCategories: setCategoriesInStore} = categoryStore()
+    const {settings, setHasSeenPWATutorial} = historyStore()
     const [categories, setCategories] = useState<CategoryGroup[]>([])
     const [localLoading, setLocalLoading] = useState(true)
+    const [showPWATutorial, setShowPWATutorial] = useState(false)
 
     useEffect(() => {
         loadCategories().then(r => r)
     }, [])
+
+    useEffect(() => {
+        // 웹 브라우저에서만 PWA 튜토리얼 표시 (네이티브 앱, PWA 설치 시 제외)
+        if (isWebBrowser() && !settings.hasSeenPWATutorial && !localLoading) {
+            // 카테고리 로딩 완료 후 약간의 딜레이
+            setTimeout(() => {
+                setShowPWATutorial(true);
+            }, 500);
+        }
+    }, [settings.hasSeenPWATutorial, localLoading])
 
     const loadCategories = async () => {
         try {
@@ -45,6 +60,11 @@ export function Welcome() {
         }
     }
 
+    const handleClosePWATutorial = () => {
+        setShowPWATutorial(false);
+        setHasSeenPWATutorial(true);
+    }
+
     if (localLoading) {
         return <LoadingSpinner message="카테고리 로딩 중..." />
     }
@@ -54,6 +74,7 @@ export function Welcome() {
             className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]"
             style={{ height: '100dvh' }}
         >
+                {showPWATutorial && <PWATutorial onClose={handleClosePWATutorial} />}
                 <BackgroundGradient variant="green-purple" />
 
             <header className="mt-5 mb-4 relative z-20">

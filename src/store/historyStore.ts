@@ -27,6 +27,7 @@ interface LearnState {
 
 interface AppSettings {
   hasSeenSwipeTutorial: boolean;
+  hasSeenPWATutorial: boolean;
 }
 
 interface HistoryStore {
@@ -47,6 +48,7 @@ interface HistoryStore {
   updateLearnState: (state: Partial<LearnState>) => void;
   resetLearnState: () => void;
   setHasSeenSwipeTutorial: (seen: boolean) => void;
+  setHasSeenPWATutorial: (seen: boolean) => void;
   reset: () => void;
 }
 
@@ -68,6 +70,7 @@ const initialState = {
   learnState: initialLearnState,
   settings: {
     hasSeenSwipeTutorial: false,
+    hasSeenPWATutorial: false,
   },
 };
 
@@ -166,6 +169,11 @@ export const historyStore = create<HistoryStore>()(
           settings: { ...state.settings, hasSeenSwipeTutorial: seen },
         })),
 
+      setHasSeenPWATutorial: (seen) =>
+        set((state) => ({
+          settings: { ...state.settings, hasSeenPWATutorial: seen },
+        })),
+
       reset: () => set({
         ...initialState,
         learnState: {
@@ -175,6 +183,7 @@ export const historyStore = create<HistoryStore>()(
         },
         settings: {
           hasSeenSwipeTutorial: false,
+          hasSeenPWATutorial: false,
         },
       }),
     }),
