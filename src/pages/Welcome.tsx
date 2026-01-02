@@ -50,7 +50,10 @@ export function Welcome() {
     }
 
     return (
-        <div className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]">
+        <div
+            className="flex flex-col h-screen p-5 relative overflow-hidden bg-[#0A0A0A]"
+            style={{ height: '100dvh' }}
+        >
                 <BackgroundGradient variant="green-purple" />
 
             <header className="mt-5 mb-4 relative z-20">
@@ -112,7 +115,10 @@ export function Welcome() {
                 ))}
             </div>
 
-            <div className="flex-shrink-0 pt-4 pb-5 px-5 -mx-5 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent relative z-20">
+            <div
+                className="flex-shrink-0 pt-4 px-5 -mx-5 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent relative z-20"
+                style={{ paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom))' }}
+            >
                 <button
                     onClick={handleStart}
                     disabled={selectedCategories.length === 0}
