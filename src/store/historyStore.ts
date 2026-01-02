@@ -52,11 +52,11 @@ interface HistoryStore {
   reset: () => void;
 }
 
-const initialLearnState: LearnState = {
+const getInitialLearnState = (): LearnState => ({
   lastSeenId: 0,
   seed: Math.floor(Math.random() * 1000000),
   categories: '',
-};
+});
 
 const initialState = {
   history: [],
@@ -67,7 +67,7 @@ const initialState = {
     lastVisit: new Date().toISOString(),
   },
   bookmarks: [],
-  learnState: initialLearnState,
+  learnState: getInitialLearnState(),
   settings: {
     hasSeenSwipeTutorial: false,
     hasSeenPWATutorial: false,
@@ -161,7 +161,7 @@ export const historyStore = create<HistoryStore>()(
 
       resetLearnState: () =>
         set({
-          learnState: initialLearnState,
+          learnState: getInitialLearnState(),
         }),
 
       setHasSeenSwipeTutorial: (seen) =>

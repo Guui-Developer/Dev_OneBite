@@ -88,11 +88,7 @@ export default function Learn({}: LearnProps) {
             const response = await ContentApi.getContentList(requestParams);
             setContentList(response.content);
 
-            if (response.content.length > 0) {
-                updateLearnState({
-                    lastSeenId: response.content[response.content.length - 1].id,
-                });
-            }
+            // lastSeenId는 스크롤 이벤트에서만 업데이트 (실제로 본 것만)
         } catch (error) {
             console.error('Failed to load content:', error);
         } finally {
@@ -102,46 +98,42 @@ export default function Learn({}: LearnProps) {
     };
 
     const loadMoreContent = useCallback(async () => {
-        if (isLoadingMore) return;
+        if (isLoadingMore || contentList.length === 0) return;
 
         try {
             setIsLoadingMore(true);
 
+            // contentList의 마지막 콘텐츠 ID를 사용 (더 많은 콘텐츠 로딩용)
+            const lastContentId = contentList[contentList.length - 1].id;
+
             const response = await ContentApi.getContentList({
                 categories: learnState.categories,
                 limit: 20,
-                lastSeenId: learnState.lastSeenId,
+                lastSeenId: lastContentId, // contentList의 마지막 ID 사용
                 seed: learnState.seed
             });
 
             setContentList([...contentList, ...response.content]);
 
-            if (response.content.length > 0) {
-                updateLearnState({
-                    lastSeenId: response.content[response.content.length - 1].id,
-                });
-            }
+            // lastSeenId는 스크롤 이벤트에서만 업데이트 (실제로 본 것만)
         } catch (error) {
             console.error('Failed to load more content:', error);
         } finally {
             setIsLoadingMore(false);
         }
-    }, [isLoadingMore, learnState, contentList, setContentList, updateLearnState]);
+    }, [isLoadingMore, learnState.categories, learnState.seed, contentList, setContentList]);
 
     useEffect(() => {
         if (contentList.length === 0) return;
 
+        // IntersectionObserver는 더 많은 콘텐츠 로딩용으로만 사용
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         const index = parseInt(entry.target.getAttribute('data-index') || '0');
 
-                        const content = contentList[index];
-                        if (content) {
-                            addToHistory(content);
-                        }
-
+                        // 더 많은 콘텐츠 로딩만 처리
                         if (index >= contentList.length - 3 && !isLoadingMore) {
                             loadMoreContent().then(r => r);
                         }
@@ -157,8 +149,56 @@ export default function Learn({}: LearnProps) {
         const elements = containerRef.current?.querySelectorAll('[data-index]');
         elements?.forEach((el) => observer.observe(el));
 
-        return () => observer.disconnect();
-    }, [contentList, isLoadingMore, loadMoreContent, addToHistory]);
+        // 스크롤 종료 시 현재 스냅된 콘텐츠만 히스토리에 추가
+        let scrollTimeout: NodeJS.Timeout;
+        const handleScrollEnd = () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (!containerRef.current) return;
+
+                const container = containerRef.current;
+                const scrollTop = container.scrollTop;
+                const viewportHeight = container.clientHeight;
+                const currentIndex = Math.round(scrollTop / viewportHeight);
+
+                if (contentList[currentIndex]) {
+                    const currentContent = contentList[currentIndex];
+                    addToHistory(currentContent);
+                    // lastSeenId 업데이트 (이어보기 위해)
+                    updateLearnState({
+                        lastSeenId: currentContent.id,
+                    });
+                }
+            }, 200); // 스크롤 멈춘 후 200ms (snap 완료 대기)
+        };
+
+        const container = containerRef.current;
+        container?.addEventListener('scroll', handleScrollEnd);
+
+        // 첫 화면 자동 히스토리 추가 (1초 후)
+        const initialTimeout = setTimeout(() => {
+            if (contentList[0] && containerRef.current) {
+                const container = containerRef.current;
+                const scrollTop = container.scrollTop;
+                const viewportHeight = container.clientHeight;
+                const currentIndex = Math.round(scrollTop / viewportHeight);
+
+                if (contentList[currentIndex]) {
+                    addToHistory(contentList[currentIndex]);
+                    updateLearnState({
+                        lastSeenId: contentList[currentIndex].id,
+                    });
+                }
+            }
+        }, 1000);
+
+        return () => {
+            observer.disconnect();
+            clearTimeout(scrollTimeout);
+            clearTimeout(initialTimeout);
+            container?.removeEventListener('scroll', handleScrollEnd);
+        };
+    }, [contentList, isLoadingMore, loadMoreContent]);
 
     const handleToggleBookmark = (contentId: number) => {
         const content = contentList.find(c => c.id === contentId);
