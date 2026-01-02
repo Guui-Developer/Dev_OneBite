@@ -40,7 +40,7 @@ export default function History({}: HistoryProps) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#0A0A0A] relative">
+    <div className="flex flex-col h-screen bg-[#0A0A0A] relative" style={{ height: '100dvh' }}>
       <BackgroundGradient variant="cyan-purple" />
 
       <PageHeader
@@ -58,7 +58,7 @@ export default function History({}: HistoryProps) {
       />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 pb-6 relative z-10">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 relative z-10 min-h-0" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
         <StatsCard stats={stats} />
 
         {/* Bookmarks Section */}

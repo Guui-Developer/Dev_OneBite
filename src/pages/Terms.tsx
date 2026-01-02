@@ -15,12 +15,12 @@ export default function Terms() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-[#0A0A0A] relative">
+    <div className="flex flex-col h-screen bg-[#0A0A0A] relative" style={{ height: '100dvh' }}>
       <BackgroundGradient variant="cyan-purple" />
 
       <PageHeader title="이용약관" showBack={true} />
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 pb-6 relative z-10">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 relative z-10 min-h-0" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
         <div className="prose prose-invert max-w-none">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}

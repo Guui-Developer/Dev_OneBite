@@ -217,7 +217,7 @@ export default function Learn({}: LearnProps) {
     }
 
     return (
-        <div className="h-screen bg-[#0A0A0A] overflow-hidden">
+        <div className="h-screen bg-[#0A0A0A] overflow-hidden" style={{ height: '100dvh' }}>
             {showTutorial && <SwipeTutorial onClose={handleCloseTutorial} />}
 
             <header
