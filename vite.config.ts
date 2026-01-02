@@ -23,11 +23,11 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}']
       },
       manifest: {
-        name: 'Dev OneBite',
-        short_name: 'OneBite',
-        description: 'Dev OneBite PWA Application',
-        theme_color: '#1E1E1E',
-        background_color: '#1E1E1E',
+        name: '개발 한입',
+        short_name: '개발한입',
+        description: '바쁜 당신을 위한 하루 5초 개발 충전소',
+        theme_color: '#0A0A0A',
+        background_color: '#0A0A0A',
         display: 'standalone',
         icons: [
           {

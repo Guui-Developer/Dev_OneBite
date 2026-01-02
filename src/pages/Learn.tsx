@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {ContentApi} from '@/api';
+import {ContentApi, CategoriesApi} from '@/api';
 import {contentStore} from '@/store/contentStore.ts';
 import {historyStore} from '@/store/historyStore.ts';
 import {categoryStore} from '@/store/categoryStore.ts';
@@ -14,13 +14,20 @@ interface LearnProps {
 
 export default function Learn({}: LearnProps) {
     const navigate = useNavigate();
-    const {selectedCategories} = categoryStore();
+    const {selectedCategories, categories, setCategories: setCategoriesInStore} = categoryStore();
     const {contentList, setContentList, setLoading} = contentStore();
     const {addToHistory, toggleBookmark, isBookmarked, learnState, updateLearnState, settings, setHasSeenSwipeTutorial} = historyStore();
     const [localLoading, setLocalLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [showTutorial, setShowTutorial] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // 카테고리 정보 로드 (태그 아이콘 표시용)
+    useEffect(() => {
+        if (categories.length === 0) {
+            loadCategories().then(r => r);
+        }
+    }, []);
 
     useEffect(() => {
         if (!settings.hasSeenSwipeTutorial) {
@@ -36,25 +43,49 @@ export default function Learn({}: LearnProps) {
         loadContent().then(r => r);
     }, [selectedCategories]);
 
+    const loadCategories = async () => {
+        try {
+            const response = await CategoriesApi.getCategories();
+            setCategoriesInStore(response.groups, response.totalContent);
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+        }
+    };
+
     const loadContent = async () => {
         try {
             setLoading(true);
             setLocalLoading(true);
             const categoriesString = selectedCategories.join(',');
 
+            let currentSeed = learnState.seed;
+            let currentLastSeenId = learnState.lastSeenId;
+
+            // 카테고리가 변경된 경우에만 seed와 lastSeenId 초기화
             if (learnState.categories !== categoriesString) {
+                currentSeed = Math.floor(Math.random() * 1000000);
+                currentLastSeenId = 0;
                 updateLearnState({
                     categories: categoriesString,
-                    seed: Math.floor(Math.random() * 1000000),
+                    seed: currentSeed,
                     lastSeenId: 0,
                 });
             }
 
-            const response = await ContentApi.getContentList({
+            // 같은 카테고리면 lastSeenId를 사용해서 이어보기
+            // 다른 카테고리면 lastSeenId가 0이므로 처음부터 시작
+            const requestParams: any = {
                 categories: categoriesString,
                 limit: 20,
-                seed: learnState.seed
-            });
+                seed: currentSeed
+            };
+
+            // lastSeenId가 0보다 크면 전달 (이어보기)
+            if (currentLastSeenId > 0) {
+                requestParams.lastSeenId = currentLastSeenId;
+            }
+
+            const response = await ContentApi.getContentList(requestParams);
             setContentList(response.content);
 
             if (response.content.length > 0) {
