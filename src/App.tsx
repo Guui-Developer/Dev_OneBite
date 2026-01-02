@@ -5,6 +5,7 @@ import History from './pages/History'
 import Category from './pages/Category'
 import Learn from './pages/Learn'
 import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/learn" element={<Learn />} />
             <Route path="/history" element={<History />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
           </Routes>
         </BrowserRouter>
       </div>
