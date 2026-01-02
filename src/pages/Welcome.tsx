@@ -15,6 +15,11 @@ export function Welcome() {
     const [localLoading, setLocalLoading] = useState(true)
 
     useEffect(() => {
+        // 이미 카테고리가 선택되어 있으면 바로 Learn 페이지로 이동
+        if (selectedCategories.length > 0) {
+            navigate('/learn')
+            return
+        }
         loadCategories().then(r => r)
     }, [])
 

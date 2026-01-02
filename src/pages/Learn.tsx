@@ -34,6 +34,7 @@ export default function Learn({}: LearnProps) {
             setLocalLoading(true);
             const categoriesString = selectedCategories.join(',');
 
+            // 카테고리가 변경되면 처음부터 시작
             if (learnState.categories !== categoriesString) {
                 updateLearnState({
                     categories: categoriesString,
@@ -42,9 +43,11 @@ export default function Learn({}: LearnProps) {
                 });
             }
 
+            // 카테고리가 동일하고 lastSeenId가 있으면 이어보기
             const response = await ContentApi.getContentList({
                 categories: categoriesString,
                 limit: 20,
+                lastSeenId: learnState.categories === categoriesString ? learnState.lastSeenId : undefined,
                 seed: learnState.seed
             });
             setContentList(response.content);
