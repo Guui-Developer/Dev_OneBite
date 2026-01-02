@@ -2,6 +2,7 @@ import { useState } from 'react';
 import MarkdownBox from '@/components/MarkdownBox';
 import { Icon } from '@/components/icons/Icon';
 import type { MemeData } from '@/api/model/response/learndata';
+import baseImage from '@/assets/baseimage.jpg';
 
 interface MemeContentProps {
   content: MemeData;
@@ -20,7 +21,7 @@ export default function MemeContent({ content }: MemeContentProps) {
             className="max-w-full h-auto rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
             onClick={() => setIsFullscreen(true)}
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
+              e.currentTarget.src = baseImage;
             }}
           />
         </div>
@@ -44,6 +45,9 @@ export default function MemeContent({ content }: MemeContentProps) {
             alt={content.title}
             className="max-w-full max-h-full object-contain"
             onClick={(e) => e.stopPropagation()}
+            onError={(e) => {
+              e.currentTarget.src = baseImage;
+            }}
           />
         </div>
       )}

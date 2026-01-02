@@ -56,7 +56,7 @@ export default function Category({}: CategoryPageProps) {
         </p>
       </header>
 
-      <div className="flex-1 overflow-y-auto pb-24 space-y-6 relative z-10">
+      <div className="flex-1 overflow-y-auto space-y-6 relative z-10 min-h-0">
         {categories.map((group) => (
           <section key={group.groupKey}>
             <div className="flex gap-2 items-center mb-3">
@@ -88,7 +88,7 @@ export default function Category({}: CategoryPageProps) {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent z-20">
+      <div className="flex-shrink-0 pt-4 pb-5 px-5 -mx-5 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent relative z-20">
         <button
           onClick={handleStart}
           disabled={selectedCategories.length === 0}

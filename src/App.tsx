@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Root from './pages/Root'
 import {Welcome} from './pages/Welcome'
 import History from './pages/History'
 import Category from './pages/Category'
@@ -11,7 +12,8 @@ function App() {
       <div className="w-full max-w-lg min-h-screen bg-[#0A0A0A] shadow-xl">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Welcome />} />
+            <Route path="/" element={<Root />} />
+            <Route path="/welcome" element={<Welcome />} />
             <Route path="/category" element={<Category />} />
             <Route path="/learn" element={<Learn />} />
             <Route path="/history" element={<History />} />

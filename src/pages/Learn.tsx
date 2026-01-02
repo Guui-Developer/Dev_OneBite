@@ -7,6 +7,7 @@ import {categoryStore} from '@/store/categoryStore.ts';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ContentCard from '@/components/ContentCard';
 import {Icon} from '@/components/icons/Icon';
+import SwipeTutorial from '@/components/SwipeTutorial';
 
 interface LearnProps {
 }
@@ -15,10 +16,17 @@ export default function Learn({}: LearnProps) {
     const navigate = useNavigate();
     const {selectedCategories} = categoryStore();
     const {contentList, setContentList, setLoading} = contentStore();
-    const {addToHistory, toggleBookmark, isBookmarked, learnState, updateLearnState} = historyStore();
+    const {addToHistory, toggleBookmark, isBookmarked, learnState, updateLearnState, settings, setHasSeenSwipeTutorial} = historyStore();
     const [localLoading, setLocalLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!settings.hasSeenSwipeTutorial) {
+            setShowTutorial(true);
+        }
+    }, [settings.hasSeenSwipeTutorial]);
 
     useEffect(() => {
         if (selectedCategories.length === 0) {
@@ -128,12 +136,19 @@ export default function Learn({}: LearnProps) {
         }
     };
 
+    const handleCloseTutorial = () => {
+        setShowTutorial(false);
+        setHasSeenSwipeTutorial(true);
+    };
+
     if (localLoading || contentList.length === 0) {
         return <LoadingSpinner message="콘텐츠 로딩 중..."/>;
     }
 
     return (
         <div className="h-screen bg-[#0A0A0A] overflow-hidden">
+            {showTutorial && <SwipeTutorial onClose={handleCloseTutorial} />}
+
             <header
                 className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/80 backdrop-blur-lg border-b border-[#2D2D2D]">
                 <div className="flex items-center justify-between px-4 py-3">

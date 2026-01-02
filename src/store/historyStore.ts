@@ -25,11 +25,16 @@ interface LearnState {
   categories: string;
 }
 
+interface AppSettings {
+  hasSeenSwipeTutorial: boolean;
+}
+
 interface HistoryStore {
   history: HistoryItem[];
   stats: HistoryStats;
   bookmarks: BookmarkItem[];
   learnState: LearnState;
+  settings: AppSettings;
 
   // Actions
   addToHistory: (content: LearningData) => void;
@@ -41,6 +46,7 @@ interface HistoryStore {
   getBookmarkedContent: (contentId: number) => LearningData | undefined;
   updateLearnState: (state: Partial<LearnState>) => void;
   resetLearnState: () => void;
+  setHasSeenSwipeTutorial: (seen: boolean) => void;
   reset: () => void;
 }
 
@@ -60,6 +66,9 @@ const initialState = {
   },
   bookmarks: [],
   learnState: initialLearnState,
+  settings: {
+    hasSeenSwipeTutorial: false,
+  },
 };
 
 export const historyStore = create<HistoryStore>()(
@@ -152,12 +161,20 @@ export const historyStore = create<HistoryStore>()(
           learnState: initialLearnState,
         }),
 
+      setHasSeenSwipeTutorial: (seen) =>
+        set((state) => ({
+          settings: { ...state.settings, hasSeenSwipeTutorial: seen },
+        })),
+
       reset: () => set({
         ...initialState,
         learnState: {
           lastSeenId: 0,
           seed: Math.floor(Math.random() * 1000000),
           categories: '',
+        },
+        settings: {
+          hasSeenSwipeTutorial: false,
         },
       }),
     }),
