@@ -256,7 +256,12 @@ export default function Learn({}: LearnProps) {
                     <div
                         key={content.id}
                         data-index={index}
-                        className="h-screen snap-start snap-always flex items-center justify-center px-4 pt-[60px] relative overflow-y-auto"
+                        className="h-screen snap-start snap-always flex items-center justify-center px-4 relative overflow-y-auto"
+                        style={{
+                            height: '100dvh',
+                            paddingTop: 'max(60px, env(safe-area-inset-top, 0px))',
+                            paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+                        }}
                     >
                         <div className="w-full">
                             <ContentCard

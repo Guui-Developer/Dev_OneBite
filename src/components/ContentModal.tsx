@@ -138,10 +138,13 @@ export default function ContentModal({
     >
       <div
         ref={containerRef}
-        className={`h-screen snap-start snap-always flex items-center justify-center px-4 py-4 relative overflow-y-auto transition-transform duration-300 max-w-md mx-auto ${
+        className={`h-screen snap-start snap-always flex items-center justify-center px-4 relative overflow-y-auto transition-transform duration-300 max-w-md mx-auto ${
           isDragging ? '' : 'ease-out'
         }`}
         style={{
+          height: '100dvh',
+          paddingTop: 'max(16px, env(safe-area-inset-top, 0px))',
+          paddingBottom: 'max(16px, env(safe-area-inset-bottom, 0px))',
           transform: `translateY(${translateY}px)`,
         }}
         onClick={(e) => e.stopPropagation()}

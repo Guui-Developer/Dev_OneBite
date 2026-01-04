@@ -138,7 +138,12 @@ export default function ContentCard({ content, isBookmarked = false, onToggleBoo
       </h1>
 
       {/* Render content based on type */}
-      <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
+      <div
+        className="overflow-y-auto"
+        style={{
+          maxHeight: 'calc(100dvh - 300px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))'
+        }}
+      >
         {renderContentByType(content)}
       </div>
 
